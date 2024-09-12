@@ -13,9 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-    
-      - name: Build and Push Docker Image
-        run: 
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker build -t brunooliverserra/nginx-bestro-restaurant:v1 .
-          docker push brunooliverserra/nginx-bestro-restaurant:v1
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t brunooliverserra/nginx-bestro-restaurant:v1 .
+
+      - name: Push Docker Image
+        run: docker push brunooliverserra/nginx-bestro-restaurant:v1
